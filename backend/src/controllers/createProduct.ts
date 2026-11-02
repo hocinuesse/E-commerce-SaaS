@@ -43,6 +43,12 @@ const createProduct = async (req: any, res: Response, next: NextFunction) => {
         ),
       );
     }
+
+    const shop = await shopModel.findById(shopId);
+    if (!shop) {
+      return next(new appError("Shop not found", 404));
+    }
+
     const product = await productModel.create({
       shop: shopId,
       name,
@@ -377,7 +383,6 @@ const getDealsProducts = async (
 
 const getNewArrivals = async (req: any, res: Response, next: NextFunction) => {
   try {
-
     const { limit } = req.query;
 
     const date30DaysAgo = new Date();
@@ -389,7 +394,7 @@ const getNewArrivals = async (req: any, res: Response, next: NextFunction) => {
     const products = await productModel
       .find({
         isActive: true,
-        //  createdAt: { $gte: date30DaysAgo }
+        createdAt: { $gte: date30DaysAgo },
       })
       .sort({ createdAt: -1 })
       .limit(safeLimit);

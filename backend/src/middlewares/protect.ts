@@ -46,12 +46,15 @@ const protect = async (req: any, res: Response, next: NextFunction) => {
         ),
       );
     }
-    // const shopIsActive = await shopModel.findById(currentUser.shopId);
-    // if (currentUser.role === UserRole.VENDOR && shopIsActive?.status !== ShopStatus.ACTIVE) {
-    //   return next(
-    //     new appError("Your shop is not active. Please contact support.", 401),
-    //   );
-    // }
+    const shopIsActive = await shopModel.findById(currentUser.shopId);
+    if (
+      currentUser.role === UserRole.VENDOR &&
+      shopIsActive?.status !== ShopStatus.ACTIVE
+    ) {
+      return next(
+        new appError("Your shop is not active. Please contact support.", 401),
+      );
+    }
 
     if (currentUser.changedPasswordAfter(decoded.iat)) {
       return next(

@@ -85,7 +85,7 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
     await mergeCart(req.sessionID, newUser._id);
 
     await createSendToken(newUser, 201, res);
-  } catch (error) {
+  } catch (error: Error | any) {
     next(error);
   }
 };

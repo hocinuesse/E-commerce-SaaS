@@ -9,6 +9,10 @@ import slugify from "slugify";
 
 const createShop = async (req: any, res: Response, next: NextFunction) => {
   try {
+    const { name, description } = req.body;
+    if (!name || !description) {
+      return next(new appError("Missing required fields", 400));
+    }
     const ownerId = req.user?._id;
 
     const existingShop = await shopModel.findOne({ owner: ownerId });
@@ -32,7 +36,8 @@ const createShop = async (req: any, res: Response, next: NextFunction) => {
     }
 
     const newShop = await shopModel.create({
-      ...req.body,
+      name,
+      description,
       owner: ownerId,
     });
 
@@ -178,6 +183,11 @@ const totalSalesReport = async (
       return next(new appError("Shop ID is required", 400));
     }
 
+    const existingShop = await shopModel.findById(shopId);
+    if (!existingShop) {
+      return next(new appError("Shop not found", 404));
+    }
+
     const userOrders = await orderModel.find({
       "items.shop": shopId,
       status: { $in: [OrderStatus.DELIVERED] },
@@ -215,6 +225,11 @@ const getMonthlySalesReport = async (
 
     const startOfYear = new Date(currentYear, 0, 1);
     const endOfYear = new Date(currentYear, 11, 31, 23, 59, 59);
+
+    const existingShop = await shopModel.findById(shopId);
+    if (!existingShop) {
+      return next(new appError("Shop not found", 404));
+    }
 
     const yearlyOrders = await orderModel.find({
       "items.shop": shopId,

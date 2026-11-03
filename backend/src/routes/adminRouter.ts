@@ -12,11 +12,12 @@ import {
 import { UserRole } from "../interfaces/IUser";
 import authorizedRoles from "../middlewares/authorizedRoles";
 import asyncWrapper from "../utils/asyncWrapper";
+import { cacheMiddleware } from "../middlewares/cacheMiddleware";
 
 const router = Router();
 
-router.get("/platform-stats", asyncWrapper(getPlatformStats));
-router.get("/best-sellers", asyncWrapper(getBestSellers));
+router.get("/platform-stats", cacheMiddleware(60), asyncWrapper(getPlatformStats));
+router.get("/best-sellers", cacheMiddleware(60), asyncWrapper(getBestSellers));
 router.use(protect, authorizedRoles(UserRole.ADMIN));
 router.get("/shops", asyncWrapper(getAllShops));
 router.get("/shops/:shopId", asyncWrapper(getShopDetails));

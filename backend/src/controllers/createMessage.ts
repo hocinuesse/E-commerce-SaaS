@@ -2,6 +2,8 @@ import { Request, Response, NextFunction } from "express";
 import messageModel from "../models/messagesModul";
 import appError from "../utils/appError";
 import shopModel from "../models/shopModul";
+import { UserRole } from "../interfaces/IUser";
+import { notifyNewMessage } from "../utils/socket";
 
 const createMessage = async (
   req: Request,
@@ -27,6 +29,12 @@ const createMessage = async (
       shopId,   
     });
 
+    try {
+      notifyNewMessage(shopId.toString(), newMessage);
+    } catch (err) {
+      // Socket emission error should not affect response
+    }
+
     res.status(201).json({
       status: "success",
       data: newMessage,
@@ -37,7 +45,7 @@ const createMessage = async (
 };
 
 const getMessagesByShop = async (
-  req: Request,
+  req: any,
   res: Response,
   next: NextFunction,
 ) => {
@@ -45,6 +53,16 @@ const getMessagesByShop = async (
     const { shopId } = req.params;
     if (!shopId) {
       return next(new appError("Shop ID is required", 400));
+    }
+
+    const user = req.user;
+    const isOwner = user?.shopId?.toString() === shopId.toString();
+    const isAdmin = user?.role === UserRole.ADMIN;
+
+    if (!isOwner && !isAdmin) {
+      return next(
+        new appError("You are not authorized to view messages for this shop", 403),
+      );
     }
 
     const messages = await messageModel
@@ -64,7 +82,7 @@ const getMessagesByShop = async (
 };
 
 const markMessageAsRead = async (
-  req: Request,
+  req: any,
   res: Response,
   next: NextFunction,
 ) => {
@@ -77,6 +95,16 @@ const markMessageAsRead = async (
     const message = await messageModel.findById(messageId);
     if (!message) {
       return next(new appError("Message not found", 404));
+    }
+
+    const user = req.user;
+    const isOwner = user?.shopId?.toString() === message.shopId.toString();
+    const isAdmin = user?.role === UserRole.ADMIN;
+
+    if (!isOwner && !isAdmin) {
+      return next(
+        new appError("You are not authorized to modify this message", 403),
+      );
     }
 
     message.isRead = true;
@@ -94,7 +122,7 @@ const markMessageAsRead = async (
 };
 
 const deleteMessage = async (
-  req: Request,
+  req: any,
   res: Response,
   next: NextFunction,
 ) => {
@@ -103,10 +131,24 @@ const deleteMessage = async (
     if (!messageId) {
       return next(new appError("Message ID is required", 400));
     }
-    const message = await messageModel.findByIdAndDelete(messageId);
+
+    const message = await messageModel.findById(messageId);
     if (!message) {
       return next(new appError("Message not found", 404));
     }
+
+    const user = req.user;
+    const isOwner = user?.shopId?.toString() === message.shopId.toString();
+    const isAdmin = user?.role === UserRole.ADMIN;
+
+    if (!isOwner && !isAdmin) {
+      return next(
+        new appError("You are not authorized to delete this message", 403),
+      );
+    }
+
+    await messageModel.findByIdAndDelete(messageId);
+
     res.status(200).json({
       status: "success",
       data: {

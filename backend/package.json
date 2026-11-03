@@ -19,10 +19,16 @@
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "express-rate-limit": "^8.7.3",
     "express-session": "^1.19.0",
+    "helmet": "^8.3.0",
+    "ioredis": "^6.0.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.7.3",
-    "slugify": "^1.6.9"
+    "morgan": "^1.12.1",
+    "slugify": "^1.6.9",
+    "socket.io": "^4.8.4",
+    "winston": "^3.19.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
@@ -31,6 +37,7 @@
     "@types/express": "^5.0.6",
     "@types/express-session": "^1.19.0",
     "@types/jsonwebtoken": "^9.0.10",
+    "@types/morgan": "^1.9.10",
     "@types/node": "^26.1.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^6.0.3"

@@ -26,13 +26,13 @@ router.get(
 router.get(
   "/shop-orders",
   protect,
-  authorizedRoles(UserRole.VENDOR),
+  authorizedRoles(UserRole.VENDOR, UserRole.ADMIN),
   getShopOrders,
 );
 router.patch(
   "/update-order-status/:orderId",
   protect,
-  authorizedRoles(UserRole.VENDOR),
+  authorizedRoles(UserRole.VENDOR, UserRole.ADMIN),
   updateOrderStatus,
 );
 

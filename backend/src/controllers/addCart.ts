@@ -67,6 +67,12 @@ const addToCart = async (
           ],
           totalPrice: finalPrice * quantity,
         });
+
+        res.status(200).json({
+          status: "success",
+          message: "Product added to cart successfully",
+          data: cart,
+        });
         return;
       } catch (err: any) {
         if (err.code === 11000) {

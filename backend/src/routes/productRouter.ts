@@ -16,6 +16,7 @@ import protect from "../middlewares/protect";
 import asyncWrapper from "../utils/asyncWrapper";
 import authorizedRoles from "../middlewares/authorizedRoles";
 import { UserRole } from "../interfaces/IUser";
+import { cacheMiddleware } from "../middlewares/cacheMiddleware";
 
 const router = Router();
 
@@ -35,16 +36,19 @@ router.post(
 );
 router.get(
   "/categories",
+  cacheMiddleware(300),
   asyncWrapper(getCategories),
 );
 
 router.get(
   "/deals",
+  cacheMiddleware(60),
   asyncWrapper(getDealsProducts),
 );
 
 router.get(
   "/new-arrivals",
+  cacheMiddleware(60),
   asyncWrapper(getNewArrivals),
 );
 

@@ -55,7 +55,7 @@ const getAllManagers = async (req: any, res: Response, next: NextFunction) => {
     }
 
     res.status(200).json({
-      status: "succes",
+      status: "success",
       data: {
         managers,
       },

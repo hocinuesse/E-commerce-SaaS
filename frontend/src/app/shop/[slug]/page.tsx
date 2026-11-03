@@ -46,6 +46,19 @@ const navItems = [
   { id: "contact", label: "التواصل" },
 ];
 
+function Stars({ rating, className = "" }: { rating: number; className?: string }) {
+  return (
+    <span className={`inline-flex items-center gap-0.5 ${className}`}>
+      {[1, 2, 3, 4, 5].map((i) => (
+        <Star
+          key={i}
+          className={`h-3.5 w-3.5 ${i <= Math.round(rating) ? "fill-gold text-gold" : "text-muted-foreground/40"}`}
+        />
+      ))}
+    </span>
+  );
+}
+
 function InteractiveStars({ rating, setRating }: { rating: number, setRating: (val: number) => void }) {
   return (
     <div className="flex items-center gap-1 dir-ltr w-fit mx-auto sm:mx-0">
@@ -111,19 +124,6 @@ function SellerStorefront() {
   const filteredProducts = activeCategory === "الكل"
     ? products
     : products.filter((product) => product.category === activeCategory);
-
-  function Stars({ rating, className = "" }: { rating: number; className?: string }) {
-    return (
-      <span className={`inline-flex items-center gap-0.5 ${className}`}>
-        {[1, 2, 3, 4, 5].map((i) => (
-          <Star
-            key={i}
-            className={`h-3.5 w-3.5 ${i <= Math.round(rating) ? "fill-gold text-gold" : "text-muted-foreground/40"}`}
-          />
-        ))}
-      </span>
-    );
-  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

@@ -33,10 +33,10 @@ import cartService from "@/services/cartService";
 import { ProductOption } from "@/interfaces/IProduct";
 
 
-function Stars({ rating, size = "sm" }: { rating: number; size?: "sm" | "md" }) {
+function Stars({ rating, size = "sm", className = "" }: { rating: number; size?: "sm" | "md"; className?: string }) {
   const cls = size === "md" ? "h-4.5 w-4.5" : "h-3.5 w-3.5";
   return (
-    <span className="flex items-center gap-0.5">
+    <span className={`inline-flex items-center gap-0.5 ${className}`}>
       {Array.from({ length: 5 }).map((_, i) => (
         <Star
           key={i}
@@ -83,9 +83,53 @@ function ProductPage() {
   const [reviewSuccess, setReviewSuccess] = useState(false);
   const [localReviews, setLocalReviews] = useState<any[]>([]);
 
+  const fetchShop = async () => {
+    setLoading(true);
+    try {
+      const response = await vendorService.getShopBySlug(slug as string);
+      setSellerInfo(response);
+    } catch (error: Error | any) {
+      console.log(error.message);
+      setError(error.message || "failed to get shop");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchProduct = async () => {
+    setLoading(true);
+    try {
+      const response = await productsService.getProductById(productId as string);
+      setProduct(response);
+    } catch (error: Error | any) {
+      console.log(error.message);
+      setError(error.message || "failed to get product");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchReviews = async () => {
+    try {
+      const response = await productsService.getReviews(productId as string);
+      setLocalReviews(response);
+    } catch (error: Error | any) {
+      console.log(error.message);
+      setError(error.message || "failed to get reviews");
+    }
+  };
+
   useEffect(() => {
     fetchShop();
   }, [slug]);
+
+  useEffect(() => {
+    fetchProduct();
+  }, [productId]);
+
+  useEffect(() => {
+    fetchReviews();
+  }, [productId]);
 
   useEffect(() => {
     if (product?.reviews) {
@@ -110,51 +154,6 @@ function ProductPage() {
       setIsSubmittingReview(false);
     }
   };
-
-  const fetchReviews = async () => {
-    try {
-      const response = await productsService.getReviews(productId as string);
-      setLocalReviews(response);
-    } catch (error: Error | any) {
-      console.log(error.message);
-      setError(error.message || "failed to get reviews");
-    }
-  };
-
-  useEffect(() => {
-    fetchReviews();
-  }, [productId]);
-
-
-  const fetchProduct = async () => {
-    setLoading(true);
-    try {
-      const response = await productsService.getProductById(productId as string);
-      setProduct(response);
-    } catch (error: Error | any) {
-      console.log(error.message);
-      setError(error.message || "failed to get product");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    fetchProduct();
-  }, [productId]);
-
-  const fetchShop = async () => {
-    setLoading(true);
-    try {
-      const response = await vendorService.getShopBySlug(slug as string);
-      setSellerInfo(response);
-    } catch (error: Error | any) {
-      console.log(error.message);
-      setError(error.message || "failed to get shop");
-    } finally {
-      setLoading(false);
-    }
-  }
 
   const handleOrder = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -185,19 +184,6 @@ function ProductPage() {
       return [...prevOptions, { name: optionName, values: [selectedValue] }];
     });
   };
-
-  function Stars({ rating, className = "" }: { rating: number; className?: string }) {
-    return (
-      <span className={`inline-flex items-center gap-0.5 ${className}`}>
-        {[1, 2, 3, 4, 5].map((i) => (
-          <Star
-            key={i}
-            className={`h-3.5 w-3.5 ${i <= Math.round(rating) ? "fill-gold text-gold" : "text-muted-foreground/40"}`}
-          />
-        ))}
-      </span>
-    );
-  }
 
   const discount = useMemo(() => {
     if (!product?.discountPrice) return 0;

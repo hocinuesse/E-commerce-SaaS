@@ -719,7 +719,7 @@ async function seed() {
     console.log("👥 إنشاء المستخدمين...");
     const createdUsers: any[] = [];
     for (const userData of usersData) {
-      const user = await userModel.create(userData);
+      const user = await userModel.create(userData as any);
       createdUsers.push(user);
       console.log(`   ✅ ${userData.name} (${userData.role}) - ${userData.email}`);
     }
@@ -733,16 +733,16 @@ async function seed() {
     const createdShops: any[] = [];
     for (let i = 0; i < shopsData.length; i++) {
       const shopData = { ...shopsData[i], owner: vendors[i]._id };
-      const shop = await shopModel.create(shopData);
+      const shop = await shopModel.create(shopData as any);
       createdShops.push(shop);
 
       // تحديث الـ Vendor بمعلومات المتجر
       await userModel.findByIdAndUpdate(vendors[i]._id, {
-        shopId: shop._id,
-        "vendorInfo.storeName": shop.name,
+        shopId: (shop as any)._id,
+        "vendorInfo.storeName": (shop as any).name,
       });
 
-      console.log(`   ✅ ${shop.name} (${shop.slug}) - المالك: ${vendors[i].name}`);
+      console.log(`   ✅ ${(shop as any).name} (${(shop as any).slug}) - المالك: ${vendors[i].name}`);
     }
 
     // 4. إنشاء المديرين وربطهم بالمتاجر
@@ -752,8 +752,8 @@ async function seed() {
         ...managersData[i],
         shopId: createdShops[i]._id,
       };
-      const manager = await userModel.create(managerData);
-      console.log(`   ✅ ${manager.name} - ${managersData[i].email} (متجر: ${createdShops[i].name})`);
+      const manager = await userModel.create(managerData as any);
+      console.log(`   ✅ ${(manager as any).name} - ${managersData[i].email} (متجر: ${(createdShops[i] as any).name})`);
     }
 
     // 5. إنشاء المنتجات
@@ -805,10 +805,10 @@ async function seed() {
             wilaya: wilayas[Math.floor(Math.random() * wilayas.length)],
             baladiya: baladiyas[Math.floor(Math.random() * baladiyas.length)],
             addressDetail: `شقة ${Math.floor(Math.random() * 20) + 1}، عمارة ${Math.floor(Math.random() * 50) + 1}`,
-            shippingType: ["home", "desk", "pickup"][Math.floor(Math.random() * 3)],
+            shippingType: ["home", "desk", "pickup"][Math.floor(Math.random() * 3)] as any,
           },
           totalAmount: price * quantity,
-          status: orderStatuses[Math.floor(Math.random() * orderStatuses.length)],
+          status: orderStatuses[Math.floor(Math.random() * orderStatuses.length)] as any,
           paymentMethod: shopForProduct?.orderMethod === "BOTH" ? (Math.random() > 0.5 ? "COD" : "CARD") : shopForProduct?.orderMethod || "COD",
         });
 
@@ -819,7 +819,7 @@ async function seed() {
 
     // 7. تحديث salesCount للمنتجات بناءً على الطلبات المُسلّمة
     console.log("\n📊 تحديث إحصائيات المبيعات...");
-    const deliveredOrders = await orderModel.find({ status: "delivered" });
+    const deliveredOrders = await orderModel.find({ status: "delivered" } as any);
     for (const order of deliveredOrders) {
       for (const item of order.items) {
         await productModel.findByIdAndUpdate(item.product, {

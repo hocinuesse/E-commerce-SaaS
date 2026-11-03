@@ -78,7 +78,7 @@ const getShopBySlug = async (
       .populate("owner", "name email phone");
 
     if (!shop) {
-      return next(new appError("Shop not found00", 404));
+      return next(new appError("Shop not found", 404));
     }
 
     const products = await productModel
@@ -111,8 +111,8 @@ const getMyShop = async (req: any, res: Response, next: NextFunction) => {
 
     const shop = await shopModel.findOne({ owner: userId });
     if (!shop) {
-      return res.status(401).json({
-        status: "failed",
+      return res.status(200).json({
+        status: "success",
         data: {
           shop: null,
         },

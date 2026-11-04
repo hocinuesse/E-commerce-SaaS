@@ -16,7 +16,6 @@ import {
   Settings,
   ShieldCheck,
   Star,
-  Stars,
   Store,
   Truck,
   Users,

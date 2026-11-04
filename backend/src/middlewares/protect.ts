@@ -2,8 +2,8 @@ import util from "util";
 import jwt from "jsonwebtoken";
 import { Response, NextFunction } from "express";
 import appError from "../utils/appError";
-import userModel from "../models/userModul";
-import shopModel from "../models/shopModul";
+import userModel from "../models/userModel";
+import shopModel from "../models/shopModel";
 import { UserRole } from "../interfaces/IUser";
 import { ShopStatus } from "../interfaces/IShop";
 

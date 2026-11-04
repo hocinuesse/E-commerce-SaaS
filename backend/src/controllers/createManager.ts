@@ -1,9 +1,9 @@
-import userModel from "../models/userModul";
+import userModel from "../models/userModel";
 import { Request, Response, NextFunction } from "express";
 import appError from "../utils/appError";
 import { IUser } from "../interfaces/IUser";
 import { UserRole } from "../interfaces/IUser";
-import productModel from "../models/productModul";
+import productModel from "../models/productModel";
 
 const createManager = async (req: any, res: Response, next: NextFunction) => {
   try {

@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
 import { OrderMethod } from "./../interfaces/IShop";
-import orderModel from "../models/orderModul";
+import orderModel from "../models/orderModel";
 import { Response, NextFunction } from "express";
 import appError from "../utils/appError";
-import userModel from "../models/userModul";
-import cartModel from "../models/cartModul";
+import userModel from "../models/userModel";
+import cartModel from "../models/cartModel";
 import { OrderStatus } from "../interfaces/ICart";
-import shopModel from "../models/shopModul";
-import productModel from "../models/productModul";
+import shopModel from "../models/shopModel";
+import productModel from "../models/productModel";
 import { UserRole } from "../interfaces/IUser";
 import { notifyNewOrder, notifyOrderStatusChanged } from "../utils/socket";
 

@@ -1,8 +1,8 @@
 import { IProductInCart } from "./../interfaces/ICart";
 import { Response, NextFunction } from "express";
-import cartModel from "../models/cartModul";
+import cartModel from "../models/cartModel";
 import appError from "../utils/appError";
-import productModel from "../models/productModul";
+import productModel from "../models/productModel";
 
 /**
  * @desc Add a product to the cart

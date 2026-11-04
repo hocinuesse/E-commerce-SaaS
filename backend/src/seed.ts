@@ -11,10 +11,10 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
-import userModel from "./models/userModul";
-import shopModel from "./models/shopModul";
-import productModel from "./models/productModul";
-import orderModel from "./models/orderModul";
+import userModel from "./models/userModel";
+import shopModel from "./models/shopModel";
+import productModel from "./models/productModel";
+import orderModel from "./models/orderModel";
 
 dotenv.config();
 

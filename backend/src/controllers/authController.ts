@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { Response, NextFunction, Request } from "express";
-import userModel from "../models/userModul";
+import userModel from "../models/userModel";
 import appError from "../utils/appError";
 import { UserRole } from "../interfaces/IUser";
 import mergeCart from "../interfaces/mergeCart";

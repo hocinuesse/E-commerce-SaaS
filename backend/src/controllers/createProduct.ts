@@ -1,7 +1,7 @@
-import productModel from "../models/productModul";
+import productModel from "../models/productModel";
 import { Response, NextFunction } from "express";
 import appError from "../utils/appError";
-import shopModel from "../models/shopModul";
+import shopModel from "../models/shopModel";
 
 const createProduct = async (req: any, res: Response, next: NextFunction) => {
   try {

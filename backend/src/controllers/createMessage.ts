@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import messageModel from "../models/messagesModul";
+import messageModel from "../models/messagesModel";
 import appError from "../utils/appError";
-import shopModel from "../models/shopModul";
+import shopModel from "../models/shopModel";
 import { UserRole } from "../interfaces/IUser";
 import { notifyNewMessage } from "../utils/socket";
 

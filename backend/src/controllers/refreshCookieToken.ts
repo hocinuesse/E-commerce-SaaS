@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { Response, NextFunction } from "express";
 import appError from "../utils/appError";
-import userModel from "../models/userModul";
+import userModel from "../models/userModel";
 
 const refreshCookieToken = async (
   req: any,

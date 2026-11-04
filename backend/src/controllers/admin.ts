@@ -1,10 +1,10 @@
-import shopModel from "../models/shopModul";
-import orderModel from "../models/orderModul";
+import shopModel from "../models/shopModel";
+import orderModel from "../models/orderModel";
 import { Request, Response, NextFunction } from "express";
 import appError from "../utils/appError";
 import { ShopStatus } from "../interfaces/IShop";
-import userModel from "../models/userModul";
-import productModel from "../models/productModul";
+import userModel from "../models/userModel";
+import productModel from "../models/productModel";
 import { UserRole } from "../interfaces/IUser";
 
 const updateShopsStatus = async (

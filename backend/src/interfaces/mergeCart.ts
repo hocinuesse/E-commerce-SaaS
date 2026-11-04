@@ -1,5 +1,5 @@
 import appError from "../utils/appError";
-import cartModel from "../models/cartModul";
+import cartModel from "../models/cartModel";
 import { Types } from "mongoose";
 
 const mergeCart = async (sessionId: string, userId: Types.ObjectId) => {

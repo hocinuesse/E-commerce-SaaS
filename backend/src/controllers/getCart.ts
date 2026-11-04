@@ -1,4 +1,4 @@
-import cartModel from "../models/cartModul";
+import cartModel from "../models/cartModel";
 import { Response, NextFunction } from "express";
 import appError from "../utils/appError";
 

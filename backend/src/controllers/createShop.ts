@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import shopModel from "../models/shopModul";
+import shopModel from "../models/shopModel";
 import appError from "../utils/appError";
 import mongoose from "mongoose";
-import productModel from "../models/productModul";
-import orderModel from "../models/orderModul";
+import productModel from "../models/productModel";
+import orderModel from "../models/orderModel";
 import { OrderStatus } from "../interfaces/ICart";
 import slugify from "slugify";
 

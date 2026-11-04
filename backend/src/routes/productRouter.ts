@@ -17,6 +17,11 @@ import asyncWrapper from "../utils/asyncWrapper";
 import authorizedRoles from "../middlewares/authorizedRoles";
 import { UserRole } from "../interfaces/IUser";
 import { cacheMiddleware } from "../middlewares/cacheMiddleware";
+import { validate } from "../middlewares/validate";
+import {
+  createProductSchema,
+  updateProductSchema,
+} from "../validations/productValidation";
 
 const router = Router();
 
@@ -32,6 +37,7 @@ router.post(
   "/create-product",
   protect,
   authorizedRoles(UserRole.VENDOR, UserRole.MANAGER),
+  validate({ body: createProductSchema }),
   asyncWrapper(createProduct),
 );
 router.get(
@@ -58,6 +64,7 @@ router.patch(
   "/update-product/:id",
   protect,
   authorizedRoles(UserRole.VENDOR, UserRole.MANAGER),
+  validate({ body: updateProductSchema }),
   asyncWrapper(updateProduct),
 );
 router.delete(

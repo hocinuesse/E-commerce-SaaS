@@ -16,6 +16,11 @@ import protect from "../middlewares/protect";
 import asyncWrapper from "../utils/asyncWrapper";
 import authorizedRoles from "../middlewares/authorizedRoles";
 import { UserRole } from "../interfaces/IUser";
+import { validate } from "../middlewares/validate";
+import {
+  createShopSchema,
+  updateShopSettingsSchema,
+} from "../validations/shopValidation";
 
 const router = Router();
 
@@ -25,6 +30,7 @@ router.post(
   "/create-shop",
   protect,
   authorizedRoles(UserRole.VENDOR),
+  validate({ body: createShopSchema }),
   asyncWrapper(createShop),
 );
 router.get(
@@ -51,6 +57,7 @@ router.patch(
   "/update-shop-settings/:shopId",
   protect,
   authorizedRoles(UserRole.VENDOR),
+  validate({ body: updateShopSettingsSchema }),
   asyncWrapper(updateShopSettings),
 );
 
@@ -59,11 +66,9 @@ router.post(
   protect,
   asyncWrapper(createReview),
 );
-
 router.get(
-  "/shop-reviews/:shopId",
+  "/product-reviews/:shopId",
   asyncWrapper(getProductReviews),
 );
-
 
 export default router;
